@@ -13,18 +13,18 @@ jobs:
 
       - name: Setup Theos
         run: |
-          bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
-          echo "THEOS=/Users/runner/theos" >> $GITHUB_ENV
+          # Cài đặt Theos vào thư mục chuẩn của GitHub Runner
+          git clone --recursive https://github.com/theos/theos.git ~/theos
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
-          export THEOS=/Users/runner/theos
-          # Lệnh này giúp bỏ qua kiểm tra SDK nghiêm ngặt để dễ build hơn
-          make FINALPACKAGE=1 ALWAYS_CLEAN=1 ARCHS="arm64 arm64e"
+          # Chạy lệnh build với đường dẫn đã thiết lập
+          export THEOS=$HOME/theos
+          make FINALPACKAGE=1 ARCHS="arm64 arm64e"
         
       - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
-          name: NetPing-Sane-Dylib
-          # Tìm tất cả file .dylib phát sinh trong thư mục build
-          path: .theos/obj/**/*.dylib
+          name: NetPing-Dylib
+          path: .theos/obj/*.dylib
