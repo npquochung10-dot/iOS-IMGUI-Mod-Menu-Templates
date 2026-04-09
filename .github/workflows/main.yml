@@ -9,7 +9,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: recursive # Tải cả các thư viện đi kèm
+          submodules: recursive
 
       - name: Setup Theos
         run: |
@@ -19,7 +19,8 @@ jobs:
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # Lệnh làm sạch bản build cũ trước khi build mới
+          # MẸO QUAN TRỌNG: Tạo file x2nios.h rỗng để máy ảo không báo lỗi thiếu file
+          touch x2nios.h
           make clean
           make FINALPACKAGE=1 ARCHS="arm64 arm64e"
         
