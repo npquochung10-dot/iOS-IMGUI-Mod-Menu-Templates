@@ -13,13 +13,13 @@ jobs:
 
       - name: Setup Theos
         run: |
-          # Cài đặt Theos sạch vào máy ảo
+          # Cài đặt Theos vào thư mục người dùng trên máy ảo
           git clone --recursive https://github.com/theos/theos.git ~/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
-          # Chạy lệnh build trực tiếp
+          # Sử dụng đường dẫn vừa thiết lập để chạy lệnh make
           export THEOS=$HOME/theos
           make FINALPACKAGE=1 ARCHS="arm64 arm64e"
         
