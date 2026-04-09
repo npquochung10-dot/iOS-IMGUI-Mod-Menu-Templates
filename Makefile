@@ -1,29 +1,11 @@
-export THEOS=/var/mobile/theos
+# Đặt tên cho tweak
+TWEAK_NAME = NetPing
 
+# Tự động tìm tất cả các file mã nguồn để build
+NetPing_FILES = Tweak.x $(wildcard Esp/*.mm) $(wildcard KittyMemory/*.cpp)
+NetPing_CFLAGS = -fobjc-arc
+NetPing_FRAMEWORKS = UIKit Foundation Security QuartzCore CoreGraphics CoreText
 
-ARCHS = arm64 
-
-DEBUG = 0
-FINALPACKAGE = 1
-FOR_RELEASE = 1
-
+# Ép hệ thống dùng đường dẫn Theos chuẩn trên máy ảo GitHub
 include $(THEOS)/makefiles/common.mk
-
-TWEAK_NAME = X2NIOSVN
-
-
-X2NIOSVN_FRAMEWORKS =  UIKit Foundation Security QuartzCore CoreGraphics CoreText  AVFoundation Accelerate GLKit SystemConfiguration GameController
-
-X2NIOSVN_CCFLAGS = -std=c++11 -fno-rtti -fno-exceptions -DNDEBUG
-X2NIOSVN_CFLAGS = -fobjc-arc -Wno-deprecated-declarations -Wno-unused-variable -Wno-unused-value
-
-X2NIOSVN_FILES =   ImGuiDrawView.mm $(wildcard Esp/*.mm)   $(wildcard Esp/*.m) $(wildcard KittyMemory/*.cpp) $(wildcard KittyMemory/*.mm) 
-
-
-
-#X2NIOSVN_LIBRARIES += substrate
-# GO_EASY_ON_ME = 1
-
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-
