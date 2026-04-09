@@ -4,28 +4,27 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13  # Dùng bản macOS ổn định hơn
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Setup Theos và SDK
+      - name: Setup Theos
         run: |
-          # Cài Theos
           git clone --recursive https://github.com/theos/theos.git ~/theos
-          # Tải SDK iPhone để sửa lỗi 'could not build module'
-          git clone https://github.com/theos/sdks.git ~/theos/sdks
+          # Lấy SDK có sẵn trong Xcode của máy ảo GitHub
+          ln -s /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk ~/theos/sdks/iPhoneOS.sdk
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # Tạo file giả nếu thiếu để tránh lỗi file not found
+          # Tạo file giả nếu thiếu để không báo lỗi file not found
           touch x2nios.h
-          # Lệnh build ép dùng SDK đã tải
-          make FINALPACKAGE=1 ARCHS="arm64 arm64e" SDKVERSION=14.5
+          make clean
+          make FINALPACKAGE=1
         
       - name: Upload Result
         uses: actions/upload-artifact@v4
