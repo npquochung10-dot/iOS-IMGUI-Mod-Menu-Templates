@@ -4,24 +4,24 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13  # Dùng bản macOS ổn định hơn
+    runs-on: macos-13
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Setup Theos
         run: |
-          git clone --recursive https://github.com/theos/theos.git ~/theos
-          # Lấy SDK có sẵn trong Xcode của máy ảo GitHub
+          # Cài Theos không kèm submodules cho nhẹ
+          git clone https://github.com/theos/theos.git ~/theos
+          # Lấy SDK có sẵn trong máy ảo macOS
+          mkdir -p ~/theos/sdks
           ln -s /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk ~/theos/sdks/iPhoneOS.sdk
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # Tạo file giả nếu thiếu để không báo lỗi file not found
+          # Tạo file giả nếu thiếu để máy ảo không đứng im
           touch x2nios.h
           make clean
           make FINALPACKAGE=1
