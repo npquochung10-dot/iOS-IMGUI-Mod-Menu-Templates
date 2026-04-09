@@ -11,18 +11,21 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Theos
+      - name: Setup Theos và SDK
         run: |
+          # Cài Theos
           git clone --recursive https://github.com/theos/theos.git ~/theos
+          # Tải SDK iPhone để sửa lỗi 'could not build module'
+          git clone https://github.com/theos/sdks.git ~/theos/sdks
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # MẸO QUAN TRỌNG: Tạo file x2nios.h rỗng để máy ảo không báo lỗi thiếu file
+          # Tạo file giả nếu thiếu để tránh lỗi file not found
           touch x2nios.h
-          make clean
-          make FINALPACKAGE=1 ARCHS="arm64 arm64e"
+          # Lệnh build ép dùng SDK đã tải
+          make FINALPACKAGE=1 ARCHS="arm64 arm64e" SDKVERSION=14.5
         
       - name: Upload Result
         uses: actions/upload-artifact@v4
