@@ -9,7 +9,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: recursive # Tải cả các thư viện đi kèm
 
       - name: Setup Theos
         run: |
@@ -19,7 +19,8 @@ jobs:
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # Lệnh này sẽ build mà không bắt lỗi tên file khắt khe
+          # Lệnh làm sạch bản build cũ trước khi build mới
+          make clean
           make FINALPACKAGE=1 ARCHS="arm64 arm64e"
         
       - name: Upload Result
