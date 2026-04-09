@@ -1,4 +1,4 @@
-name: Build NetPing Dylib
+name: Build LGL Menu
 on:
   workflow_dispatch:
 
@@ -11,23 +11,19 @@ jobs:
 
       - name: Setup Theos
         run: |
-          # Cài Theos không kèm submodules cho nhẹ
           git clone https://github.com/theos/theos.git ~/theos
-          # Lấy SDK có sẵn trong máy ảo macOS
           mkdir -p ~/theos/sdks
+          # Lấy SDK iPhone có sẵn trong máy ảo GitHub để tránh lỗi module
           ln -s /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk ~/theos/sdks/iPhoneOS.sdk
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          # Tạo file giả nếu thiếu để máy ảo không đứng im
-          touch x2nios.h
-          make clean
-          make FINALPACKAGE=1
+          make FINALPACKAGE=1 ARCHS="arm64 arm64e"
         
       - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
-          name: NetPing-Dylib
+          name: LGL-Menu-Dylib
           path: .theos/obj/*.dylib
