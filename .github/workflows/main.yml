@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -19,10 +19,12 @@ jobs:
       - name: Build Dylib
         run: |
           export THEOS=/Users/runner/theos
-          make package FINALPACKAGE=1
+          # Lệnh này giúp bỏ qua kiểm tra SDK nghiêm ngặt để dễ build hơn
+          make FINALPACKAGE=1 ALWAYS_CLEAN=1 ARCHS="arm64 arm64e"
         
       - name: Upload Result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: NetPing-Dylib
-          path: .theos/obj/*.dylib
+          name: NetPing-Sane-Dylib
+          # Tìm tất cả file .dylib phát sinh trong thư mục build
+          path: .theos/obj/**/*.dylib
