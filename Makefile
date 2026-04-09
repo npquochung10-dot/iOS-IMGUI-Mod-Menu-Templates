@@ -1,11 +1,10 @@
-# Đặt tên cho tweak
+# Đặt tên cho Menu
 TWEAK_NAME = NetPing
 
-# Tự động tìm tất cả các file mã nguồn để build
-NetPing_FILES = Tweak.x $(wildcard Esp/*.mm) $(wildcard KittyMemory/*.cpp)
+# Tự động quét tất cả file .x, .xm, .mm trong thư mục gốc và thư mục con
+NetPing_FILES = $(wildcard *.x) $(wildcard *.xm) $(wildcard *.mm) $(wildcard Esp/*.mm) $(wildcard KittyMemory/*.cpp)
 NetPing_CFLAGS = -fobjc-arc
 NetPing_FRAMEWORKS = UIKit Foundation Security QuartzCore CoreGraphics CoreText
 
-# Ép hệ thống dùng đường dẫn Theos chuẩn trên máy ảo GitHub
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
