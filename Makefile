@@ -5,8 +5,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = NetPing
 
-# Tự động lấy sạch file trong các thư mục
-NetPing_FILES = $(wildcard *.x) $(wildcard *.xm) $(wildcard *.mm) $(wildcard Esp/*.mm) $(wildcard KittyMemory/*.cpp)
+NetPing_FILES = ImGuiDrawView.mm $(wildcard Esp/*.mm) $(wildcard KittyMemory/*.cpp)
 NetPing_CFLAGS = -fobjc-arc -I./ -IEsp -IKittyMemory
 NetPing_FRAMEWORKS = UIKit Foundation Security QuartzCore CoreGraphics CoreText
 
